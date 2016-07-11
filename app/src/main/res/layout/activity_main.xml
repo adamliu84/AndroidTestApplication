@@ -38,5 +38,16 @@
                 android:onClick="onSecondActivity" />
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:text="Make toast"
+                android:id="@+id/btnToast"
+                android:layout_column="0"
+                android:onClick="onToast" />
+        </TableRow>
+
     </TableLayout>
 </RelativeLayout>
