@@ -19,20 +19,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Open Second Page"
-                android:id="@+id/btnSecondActivity"
-                android:layout_column="0"
-                android:onClick="onSecondActivity" />
-
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtSecondActivity"
-                android:layout_column="1"
-                android:width="150dp" />
+                android:id="@+id/txtInput"
+                android:layout_column="0"
+                android:width="300dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:text="Open Second Page with  parameter"
+                android:id="@+id/btnSecondActivity"
+                android:layout_column="0"
+                android:onClick="onSecondActivity" />
         </TableRow>
 
     </TableLayout>

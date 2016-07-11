@@ -17,12 +17,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSecondActivity(View view){
         //Get textbox value
-        String szPassValue = ((TextView)findViewById(R.id.txtSecondActivity)).getText().toString();
+        Intent intent = new Intent(this, SecondActivity.class);
+        intent.putExtra("toSecondIntent", getTextInput());
+        this.startActivity(intent);
+    }
+
+    private String getTextInput(){
+        String szPassValue = ((TextView)findViewById(R.id.txtInput)).getText().toString();
         if(szPassValue.equals("")){
             szPassValue="DEFAULT";
         }
-        Intent intent = new Intent(this, SecondActivity.class);
-        intent.putExtra("toSecondIntent", szPassValue);
-        this.startActivity(intent);
+        return szPassValue;
     }
 }
