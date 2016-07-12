@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<characters>
+	<character>
+		<name>Liu Bei</name>
+		<atk>34</atk>
+		<def>84</def>
+	</character>
+	<character>
+		<name>Cao Cao</name>
+		<atk>90</atk>
+		<def>60</def>
+	</character>
+	<character>
+		<name>Sun Quan</name>
+		<atk>50</atk>
+		<def>50</def>
+	</character>
+</characters>

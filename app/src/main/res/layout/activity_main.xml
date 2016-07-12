@@ -50,8 +50,9 @@
                 android:layout_alignParentStart="true" />
 
             <Button
-                android:text="TEMP1"
+                android:text="XML List"
                 android:layout_column="0"
+                android:onClick="onXmlListActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true" />

@@ -37,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
         this._previousToast.show();
     }
 
+    public void onXmlListActivity(View view){
+        Intent intent = new Intent(this, XmlListActivity.class);
+        this.startActivity(intent);
+    }
+
     private String getTextInput(){
         String szPassValue = ((TextView)findViewById(R.id.txtInput)).getText().toString();
         if(szPassValue.equals("")){
