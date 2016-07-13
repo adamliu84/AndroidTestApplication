@@ -20,6 +20,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class XmlListActivity extends AppCompatActivity {
@@ -104,5 +105,9 @@ public class XmlListActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.rotkcharacterlistview);
         listView.setAdapter(theAdapter);
 
+    }
+
+    private ArrayList<RotkCharacter> updateWithCatAvatar(ArrayList<RotkCharacter> aRotkCharacters){
+        return aRotkCharacters;
     }
 }

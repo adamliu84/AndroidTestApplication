@@ -6,6 +6,7 @@ package com.example.adam.androidtestapplication.rotk;
 public class RotkCharacter {
 
     String _name = "";
+    String _avatarurl = "http://25.media.tumblr.com/tumblr_m4lj6lbENX1r2h6ioo1_500.jpg"; //Default
     int _atk = 0;
     int _def = 0;
 
@@ -22,6 +23,14 @@ public class RotkCharacter {
 
     public int get_def() {
         return _def;
+    }
+
+    public String get_avatarurl() {
+        return _avatarurl;
+    }
+
+    public void set_avatarurl(String _avatarurl) {
+        this._avatarurl = _avatarurl;
     }
 
     public void set_name(String _name) {
