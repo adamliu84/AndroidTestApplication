@@ -7,9 +7,12 @@ import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.adam.androidtestapplication.rotk.RotkCharacter;
+import com.example.adam.androidtestapplication.rotk.RotkCharacterAdapter;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -88,12 +91,18 @@ public class XmlListActivity extends AppCompatActivity {
             eventType = parser.next();
         }
         //Add temp textView for each character
-        View linearLayout = findViewById(R.id.activityxmllistmain);
-        for (RotkCharacter curChar : aRotkCharacters) {
-            TextView valueTV = new TextView(this);
-            valueTV.setText(curChar.toString());
-            valueTV.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            ((LinearLayout) linearLayout).addView(valueTV);
-        }
+//        View linearLayout = findViewById(R.id.activityxmllistmain);
+//        for (RotkCharacter curChar : aRotkCharacters) {
+//            TextView valueTV = new TextView(this);
+//            valueTV.setText(curChar.toString());
+//            valueTV.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//            ((LinearLayout) linearLayout).addView(valueTV);
+//        }
+
+        RotkCharacter[] tempArray = aRotkCharacters.toArray(new RotkCharacter[aRotkCharacters.size()]);
+        ListAdapter theAdapter = new RotkCharacterAdapter(this, tempArray);
+        ListView listView = (ListView) findViewById(R.id.rotkcharacterlistview);
+        listView.setAdapter(theAdapter);
+
     }
 }

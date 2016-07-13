@@ -12,6 +12,18 @@ public class RotkCharacter {
     public RotkCharacter() {
     }
 
+    public String get_name() {
+        return _name;
+    }
+
+    public int get_atk() {
+        return _atk;
+    }
+
+    public int get_def() {
+        return _def;
+    }
+
     public void set_name(String _name) {
         this._name = _name;
     }
