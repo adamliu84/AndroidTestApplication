@@ -1,15 +1,11 @@
 package com.example.adam.androidtestapplication;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
-import android.util.Xml;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.adam.androidtestapplication.rotk.RotkCharacter;
 import com.example.adam.androidtestapplication.rotk.RotkCharacterAdapter;
@@ -18,13 +14,58 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class XmlListActivity extends AppCompatActivity {
 
+
+    private static ArrayList<RotkCharacter> updateWithCatAvatar(ArrayList<RotkCharacter> aRotkCharacters, String szCatApi) throws XmlPullParserException, IOException {
+
+        int nCurIndex = 0;
+
+        XmlPullParserFactory pullParserFactory;
+        try {
+            pullParserFactory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = pullParserFactory.newPullParser();
+
+            //InputStream in_s = getApplicationContext().getAssets().open("raw/rotk.xml");
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(new StringReader(szCatApi));
+
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                String tagName = null;
+                switch (eventType) {
+                    case XmlPullParser.START_DOCUMENT:
+                        break;
+                    case XmlPullParser.START_TAG:
+                        tagName = parser.getName();
+                        //If new character, init new character
+                        if (tagName.equals("url")) {
+                           RotkCharacter curRotkCharacter = aRotkCharacters.get(nCurIndex);
+                            curRotkCharacter.set_avatarurl(parser.nextText());
+                            nCurIndex++;
+                        }
+                        break;
+                }
+                eventType = parser.next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return aRotkCharacters;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +86,8 @@ public class XmlListActivity extends AppCompatActivity {
             parseXML(parser);
 
         } catch (XmlPullParserException e) {
-
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -91,23 +130,56 @@ public class XmlListActivity extends AppCompatActivity {
             }
             eventType = parser.next();
         }
-        //Add temp textView for each character
-//        View linearLayout = findViewById(R.id.activityxmllistmain);
-//        for (RotkCharacter curChar : aRotkCharacters) {
-//            TextView valueTV = new TextView(this);
-//            valueTV.setText(curChar.toString());
-//            valueTV.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//            ((LinearLayout) linearLayout).addView(valueTV);
-//        }
 
-        RotkCharacter[] tempArray = aRotkCharacters.toArray(new RotkCharacter[aRotkCharacters.size()]);
-        ListAdapter theAdapter = new RotkCharacterAdapter(this, tempArray);
-        ListView listView = (ListView) findViewById(R.id.rotkcharacterlistview);
-        listView.setAdapter(theAdapter);
+        //TODO SUPER DIRTY WAY TO LOAD CAT AVATAR!
+        try {
+            String szCatApi = new RandomCatAvatarUrlTask().execute("http://thecatapi.com/api/images/get?format=xml&type=jpg&results_per_page="+Integer.toString(aRotkCharacters.size())).get();
+            aRotkCharacters = updateWithCatAvatar(aRotkCharacters, szCatApi);
+            RotkCharacter[] tempArray = aRotkCharacters.toArray(new RotkCharacter[aRotkCharacters.size()]);
+            ListAdapter theAdapter = new RotkCharacterAdapter(this, tempArray);
+            ListView listView = (ListView) findViewById(R.id.rotkcharacterlistview);
+            listView.setAdapter(theAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private ArrayList<RotkCharacter> updateWithCatAvatar(ArrayList<RotkCharacter> aRotkCharacters){
-        return aRotkCharacters;
+    private class RandomCatAvatarUrlTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String urlOfImage = urls[0];
+            String responseString = null;
+            try {
+                URL url = new URL(urlOfImage);
+                //create the new connection
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                //set up some things on the connection
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoOutput(true);
+                //and connect!
+                urlConnection.connect();
+                //this will be used in reading the data from the internet
+                InputStream inputStream = urlConnection.getInputStream();
+
+                BufferedReader br = null;
+                StringBuilder sb = new StringBuilder();
+                br = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                responseString = sb.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
     }
 }
