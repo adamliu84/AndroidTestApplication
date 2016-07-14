@@ -3,69 +3,29 @@ package com.example.adam.androidtestapplication;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.example.adam.androidtestapplication.rotk.RotkCharacter;
 import com.example.adam.androidtestapplication.rotk.RotkCharacterAdapter;
+import com.example.adam.androidtestapplication.rotk.RotkXmlParser;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.InterruptedIOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class XmlListActivity extends AppCompatActivity {
-
-
-    private static ArrayList<RotkCharacter> updateWithCatAvatar(ArrayList<RotkCharacter> aRotkCharacters, String szCatApi) throws XmlPullParserException, IOException {
-
-        int nCurIndex = 0;
-
-        XmlPullParserFactory pullParserFactory;
-        try {
-            pullParserFactory = XmlPullParserFactory.newInstance();
-            XmlPullParser parser = pullParserFactory.newPullParser();
-
-            //InputStream in_s = getApplicationContext().getAssets().open("raw/rotk.xml");
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-            parser.setInput(new StringReader(szCatApi));
-
-            int eventType = parser.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                String tagName = null;
-                switch (eventType) {
-                    case XmlPullParser.START_DOCUMENT:
-                        break;
-                    case XmlPullParser.START_TAG:
-                        tagName = parser.getName();
-                        //If new character, init new character
-                        if (tagName.equals("url")) {
-                           RotkCharacter curRotkCharacter = aRotkCharacters.get(nCurIndex);
-                            curRotkCharacter.set_avatarurl(parser.nextText());
-                            nCurIndex++;
-                        }
-                        break;
-                }
-                eventType = parser.next();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return aRotkCharacters;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,74 +35,37 @@ public class XmlListActivity extends AppCompatActivity {
 
         XmlPullParserFactory pullParserFactory;
         try {
+            //Parsing of ROKT characters listing from xml
             pullParserFactory = XmlPullParserFactory.newInstance();
             XmlPullParser parser = pullParserFactory.newPullParser();
-
-            //InputStream in_s = getApplicationContext().getAssets().open("raw/rotk.xml");
             InputStream in_s = getResources().openRawResource(R.raw.rotk);
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(in_s, null);
+            ArrayList<RotkCharacter> aRotkCharacters = RotkXmlParser.parseRotkCharacter(parser);
 
-            parseXML(parser);
+            //Parsing of freshly downloaded xml listing for avatar upload
+            String szCatApiXmlResponse = new RandomCatAvatarUrlTask().execute("http://thecatapi.com/api/images/get?format=xml&type=jpg&results_per_page=" + Integer.toString(aRotkCharacters.size())).get();
+            pullParserFactory = XmlPullParserFactory.newInstance();
+            parser = pullParserFactory.newPullParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(new StringReader(szCatApiXmlResponse));
+            aRotkCharacters = RotkXmlParser.parseCatAvatar(parser, aRotkCharacters);
+
+            //Loading into listAdapter for display
+            RotkCharacter[] tempArray = aRotkCharacters.toArray(new RotkCharacter[aRotkCharacters.size()]);
+            ListAdapter theAdapter = new RotkCharacterAdapter(this, tempArray);
+            ListView listView = (ListView) findViewById(R.id.rotkcharacterlistview);
+            listView.setAdapter(theAdapter);
 
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-    }
-
-    private void parseXML(XmlPullParser parser) throws XmlPullParserException, IOException {
-
-        ArrayList<RotkCharacter> aRotkCharacters = new ArrayList<RotkCharacter>();
-        RotkCharacter curRotkCharacter = null;
-
-        int eventType = parser.getEventType();
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            String tagName = null;
-            switch (eventType) {
-                case XmlPullParser.START_DOCUMENT:
-                    break;
-                case XmlPullParser.START_TAG:
-                    tagName = parser.getName();
-                    //If new character, init new character
-                    if (tagName.equals("character")) {
-                        curRotkCharacter = new RotkCharacter();
-                    }
-                    //After that start setting values for new character
-                    if (tagName.equals("name")) {
-                        curRotkCharacter.set_name(parser.nextText());
-                    }
-                    if (tagName.equals("atk")) {
-                        curRotkCharacter.set_atk(Integer.parseInt(parser.nextText()));
-                    }
-                    if (tagName.equals("def")) {
-                        curRotkCharacter.set_def(Integer.parseInt(parser.nextText()));
-                    }
-                    break;
-                case XmlPullParser.END_TAG:
-                    tagName = parser.getName();
-                    //Add into character roster
-                    if (tagName.equals("character") && curRotkCharacter != null) {
-                        aRotkCharacters.add(curRotkCharacter);
-                    }
-            }
-            eventType = parser.next();
-        }
-
-        //TODO SUPER DIRTY WAY TO LOAD CAT AVATAR!
-        try {
-            String szCatApi = new RandomCatAvatarUrlTask().execute("http://thecatapi.com/api/images/get?format=xml&type=jpg&results_per_page="+Integer.toString(aRotkCharacters.size())).get();
-            aRotkCharacters = updateWithCatAvatar(aRotkCharacters, szCatApi);
-            RotkCharacter[] tempArray = aRotkCharacters.toArray(new RotkCharacter[aRotkCharacters.size()]);
-            ListAdapter theAdapter = new RotkCharacterAdapter(this, tempArray);
-            ListView listView = (ListView) findViewById(R.id.rotkcharacterlistview);
-            listView.setAdapter(theAdapter);
-        } catch (Exception e) {
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }catch (ExecutionException e){
             e.printStackTrace();
         }
-
     }
 
     private class RandomCatAvatarUrlTask extends AsyncTask<String, Void, String> {
@@ -175,11 +98,6 @@ public class XmlListActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             return responseString;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
         }
     }
 }
