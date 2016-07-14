@@ -18,7 +18,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.InterruptedIOException;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -44,7 +43,7 @@ public class XmlListActivity extends AppCompatActivity {
             ArrayList<RotkCharacter> aRotkCharacters = RotkXmlParser.parseRotkCharacter(parser);
 
             //Parsing of freshly downloaded xml listing for avatar upload
-            String szCatApiXmlResponse = new RandomCatAvatarUrlTask().execute("http://thecatapi.com/api/images/get?format=xml&type=jpg&results_per_page=" + Integer.toString(aRotkCharacters.size())).get();
+            String szCatApiXmlResponse = new DownloadCatXmlTask().execute("http://thecatapi.com/api/images/get?format=xml&type=jpg&results_per_page=" + Integer.toString(aRotkCharacters.size())).get();
             pullParserFactory = XmlPullParserFactory.newInstance();
             parser = pullParserFactory.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -68,7 +67,7 @@ public class XmlListActivity extends AppCompatActivity {
         }
     }
 
-    private class RandomCatAvatarUrlTask extends AsyncTask<String, Void, String> {
+    private class DownloadCatXmlTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... urls) {

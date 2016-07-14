@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,7 @@ import android.widget.TextView;
 
 import com.example.adam.androidtestapplication.R;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
@@ -52,17 +49,17 @@ public class RotkCharacterAdapter extends ArrayAdapter<RotkCharacter> {
         theTextView.setText("DEF:"+Integer.toString(curRotkCharacter.get_def()));
         // Get the ImageView in the layout
         ImageView theImageView = (ImageView) theView.findViewById(R.id.rotkCharRowAvatar);
-        new DownLoadImageTask(theImageView).execute(curRotkCharacter.get_avatarurl());
+        new DownloadCatImageTask(theImageView).execute(curRotkCharacter.get_avatarurl());
 
         return theView;
 
     }
 
     //http://android--code.blogspot.sg/2015/08/android-imageview-set-image-from-url.html
-    private class DownLoadImageTask extends AsyncTask<String,Void,Bitmap> {
+    private class DownloadCatImageTask extends AsyncTask<String,Void,Bitmap> {
         ImageView imageView;
 
-        public DownLoadImageTask(ImageView imageView){
+        public DownloadCatImageTask(ImageView imageView){
             this.imageView = imageView;
         }
 
