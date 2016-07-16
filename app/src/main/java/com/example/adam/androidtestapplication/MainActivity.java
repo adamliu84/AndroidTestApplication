@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
+    public void onLearnToPlayActivity(View view){
+        Intent intent = new Intent(this, LearnToPlayActivity.class);
+        this.startActivity(intent);
+    }
+
     private String getTextInput(){
         String szPassValue = ((TextView)findViewById(R.id.txtInput)).getText().toString();
         if(szPassValue.equals("")){

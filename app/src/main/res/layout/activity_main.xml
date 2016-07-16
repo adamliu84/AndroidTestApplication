@@ -58,11 +58,12 @@
                 android:layout_alignParentStart="true" />
 
             <Button
-                android:text="TEMP2"
+                android:text="Learn to Fly via Youtube player"
                 android:layout_column="0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:onClick="onLearnToPlayActivity" />
 
             <Button
                 android:text="TEMP3"
