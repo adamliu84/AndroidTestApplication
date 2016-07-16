@@ -25,12 +25,12 @@ public class LearnToPlayActivity extends YouTubeBaseActivity {
         onInitializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                youTubePlayer.loadVideo("1koy1H9beek");
+                youTubePlayer.loadVideo("1VQ_3sBZEm0");
             }
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                Log.d("ASDF", youTubeInitializationResult.toString());
+                Log.d("YoutubeError", youTubeInitializationResult.toString());
             }
         };
 
