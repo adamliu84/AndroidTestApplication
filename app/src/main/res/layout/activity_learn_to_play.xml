@@ -25,4 +25,19 @@
         android:layout_marginTop="82dp"
         android:layout_below="@+id/ytpFly"
         android:layout_centerHorizontal="true" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/btnFly"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Run and tell all of the angels\n This could take all night\n Think I need a devil to help me\n Get things right\n \n Hook me up a new revolution\n &apos;Cause this one is a lie\n We sat around laughing\n And watch the last one die\n \n I&apos;m looking to the sky to save me\n Looking for a sign of life\n Looking for something help me burn out bright\n \n I&apos;m looking for a complication\n Looking &apos;cause I&apos;m tired of trying\n Make my way back home\n When I learn to fly (high)\n \n Think I&apos;m done nursing the patience\n I can wait one night\n I&apos;d give it all away\n If you give me one last try\n \n We live happily ever trapped\n If you just save my life\n Run and tell the angels\n That everything is all right\n \n I&apos;m looking to the sky to save me\n Looking for a sign of life\n Looking for something help me burn out bright\n \n I&apos;m looking for a complication\n Looking &apos;cause I&apos;m tired of trying\n Make my way back home\n When I learn to fly (high)\n Make my way back home\n When I learn to fly\n \n Fly along with me\n I can&apos;t quite make it alone\n Try to make this life my own\n Fly along with me\n I can&apos;t quite make it alone\n Try to make this life my own\n \n I&apos;m looking to the sky to save me\n Looking for a sign of life\n Looking for something help me burn out bright\n \n I&apos;m looking for a complication\n Looking &apos;cause I&apos;m tired of trying\n Make my way back home\n When I learn to\n \n Looking to the sky to save me\n Looking for a sign of life\n Looking for something help me burn out bright\n \n I&apos;m looking for a complication\n Looking &apos;cause I&apos;m tired of trying\n Make my way back home\n When I learn to fly high\n Make my way back home\n When I learn to fly\n Make my way back home\n When I learn to\n  "
+            android:id="@+id/textView2" />
+    </ScrollView>
 </RelativeLayout>
