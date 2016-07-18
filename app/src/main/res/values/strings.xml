@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AndroidTestApplication</string>
+    <string name="title_activity_notification_sql">NotificationSQLActivity</string>
 </resources>
