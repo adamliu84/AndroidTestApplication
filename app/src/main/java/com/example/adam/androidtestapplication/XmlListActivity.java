@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.adam.androidtestapplication.rotk.RotkCharacter;
 import com.example.adam.androidtestapplication.rotk.RotkCharacterAdapter;
@@ -44,6 +45,9 @@ public class XmlListActivity extends AppCompatActivity {
 
             //Parsing of freshly downloaded xml listing for avatar upload
             String szCatApiXmlResponse = new DownloadCatXmlTask().execute("http://thecatapi.com/api/images/get?format=xml&type=jpg&results_per_page=" + Integer.toString(aRotkCharacters.size())).get();
+            if(szCatApiXmlResponse.equals("")){
+                throw new Exception("Invalid Cat API Response");
+            }
             pullParserFactory = XmlPullParserFactory.newInstance();
             parser = pullParserFactory.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -56,14 +60,12 @@ public class XmlListActivity extends AppCompatActivity {
             ListView listView = (ListView) findViewById(R.id.rotkcharacterlistview);
             listView.setAdapter(theAdapter);
 
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }catch (ExecutionException e){
-            e.printStackTrace();
+        } catch (XmlPullParserException | IOException | InterruptedException | ExecutionException e) {
+            Toast tempToast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
+            tempToast.show();
+        }catch (Exception e){
+            Toast tempToast = Toast.makeText(getApplicationContext(),e.getMessage() , Toast.LENGTH_SHORT);
+            tempToast.show();
         }
     }
 
@@ -94,7 +96,7 @@ public class XmlListActivity extends AppCompatActivity {
                 }
                 responseString = sb.toString();
             } catch (Exception e) {
-                e.printStackTrace();
+                responseString = "";
             }
             return responseString;
         }
