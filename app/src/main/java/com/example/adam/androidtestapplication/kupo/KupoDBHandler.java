@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  * Created by adam on 18/7/16.
@@ -38,6 +39,19 @@ public class KupoDBHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_KUPO_RECORD);
         onCreate(sqLiteDatabase);
+    }
+
+    public ArrayList<String> listKupo(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_KUPO_RECORD+" ORDER BY ID DESC", null);
+        final ArrayList<String> aszKupo = new ArrayList<String>();
+        while (cursor.moveToNext()) {
+            Integer nId = cursor.getInt(0);
+            String szKupoValue = cursor.getString(1);
+            Date dateTimestamp = new Date(cursor.getLong(2));
+            aszKupo.add(Integer.toString(nId)+" "+szKupoValue+" "+dateTimestamp.toString());
+        };
+        return aszKupo;
     }
 
     public static void testDataInit(Context context) {

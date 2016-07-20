@@ -8,20 +8,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.example.adam.androidtestapplication.kupo.KupoDBHandler;
 
 public class NotificationSQLActivity extends AppCompatActivity {
 
     Dialog m_kupoDialog = null;
+    KupoDBHandler m_kupoDB = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_sql);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         //Init custom dialog
         this.createKupoDialog();
@@ -37,11 +40,19 @@ public class NotificationSQLActivity extends AppCompatActivity {
         });
 
         //Get Kupo Record
-        KupoDBHandler kupoDB = new KupoDBHandler(this);
+        this.m_kupoDB = new KupoDBHandler(this);
         //Testing data
-        KupoDBHandler.testDataInit(this);
-        KupoDBHandler.testDataLog(this);
-        KupoDBHandler.testDataRemove(this);
+        //KupoDBHandler.testDataInit(this);
+        //KupoDBHandler.testDataLog(this);
+        //KupoDBHandler.testDataRemove(this);
+        updateKupoList();
+    }
+
+    private void updateKupoList(){
+        ListView l = (ListView) findViewById(R.id.listKupo);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, this.m_kupoDB.listKupo());
+        l.setAdapter(adapter);
     }
 
     private void createKupoDialog(){
