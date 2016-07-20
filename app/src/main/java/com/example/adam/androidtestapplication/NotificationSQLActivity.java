@@ -55,6 +55,11 @@ public class NotificationSQLActivity extends AppCompatActivity {
         l.setAdapter(adapter);
     }
 
+    private void addKupo(){
+        this.m_kupoDB.addKupo();
+        updateKupoList();
+    }
+
     private void createKupoDialog(){
         // custom dialog
         this.m_kupoDialog = new Dialog(this);
@@ -66,7 +71,7 @@ public class NotificationSQLActivity extends AppCompatActivity {
         dialogButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("info", "kupook");
+                addKupo();
                 parentDialog.dismiss();
             }
         });
@@ -75,7 +80,6 @@ public class NotificationSQLActivity extends AppCompatActivity {
         dialogButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("info", "kupocancel");
                 parentDialog.dismiss();
             }
         });

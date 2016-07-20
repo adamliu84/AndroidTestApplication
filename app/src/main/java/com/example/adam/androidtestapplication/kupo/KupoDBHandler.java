@@ -51,7 +51,17 @@ public class KupoDBHandler extends SQLiteOpenHelper {
             Date dateTimestamp = new Date(cursor.getLong(2));
             aszKupo.add(Integer.toString(nId)+" "+szKupoValue+" "+dateTimestamp.toString());
         };
+        cursor.close();
+        db.close();
         return aszKupo;
+    }
+
+    public void addKupo(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("KupoValue", "test1");
+        db.insert(TABLE_KUPO_RECORD, null, values);
+        db.close();
     }
 
     public static void testDataInit(Context context) {
