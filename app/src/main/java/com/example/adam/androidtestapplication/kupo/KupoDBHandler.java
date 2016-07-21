@@ -48,8 +48,8 @@ public class KupoDBHandler extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             Integer nId = cursor.getInt(0);
             String szKupoValue = cursor.getString(1);
-            Date dateTimestamp = new Date(cursor.getLong(2));
-            aszKupo.add(Integer.toString(nId)+" "+szKupoValue+" "+dateTimestamp.toString());
+            String dateTimestamp = cursor.getString(2);
+            aszKupo.add(Integer.toString(nId)+" "+szKupoValue+" "+dateTimestamp);
         };
         cursor.close();
         db.close();
@@ -90,9 +90,9 @@ public class KupoDBHandler extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             Integer nId = cursor.getInt(0);
             String szKupoValue = cursor.getString(1);
-            Date dateTimestamp = new Date(cursor.getLong(2));
-            String temp = Integer.toString(nId)+" "+szKupoValue+" "+dateTimestamp.toString();
-            Log.d("oei", temp);
+            String dateTimestamp = cursor.getString(2);
+            String temp = Integer.toString(nId)+" "+szKupoValue+" "+dateTimestamp;
+            Log.d("Debug", temp);
         };
     }
 
