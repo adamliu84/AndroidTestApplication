@@ -14,7 +14,7 @@ import android.widget.ListView;
 
 import com.example.adam.androidtestapplication.kupo.KupoDBHandler;
 
-public class NotificationSQLActivity extends AppCompatActivity {
+public class SQLiteActivity extends AppCompatActivity {
 
     Dialog m_kupoDialog = null;
     KupoDBHandler m_kupoDB = null;

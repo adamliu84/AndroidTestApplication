@@ -21,7 +21,7 @@
         <activity android:name=".XmlListActivity" />
         <activity android:name=".LearnToPlayActivity" />
         <activity
-            android:name=".NotificationSQLActivity"
+            android:name=".SQLiteActivity"
             android:label="@string/title_activity_notification_sql"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

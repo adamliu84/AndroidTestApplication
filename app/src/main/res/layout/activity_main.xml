@@ -67,7 +67,7 @@
 
             <Button
                 android:text="Kupo SQLite"
-                android:onClick="onNotificationSQLActivity"
+                android:onClick="onSQLiteActivity"
                 android:layout_column="0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
