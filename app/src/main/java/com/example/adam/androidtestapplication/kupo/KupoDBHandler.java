@@ -59,7 +59,7 @@ public class KupoDBHandler extends SQLiteOpenHelper {
     public void addKupo(){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("KupoValue", "test1");
+        values.put("KupoValue", "Kupo!");
         db.insert(TABLE_KUPO_RECORD, null, values);
         db.close();
     }
