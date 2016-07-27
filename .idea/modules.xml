@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidTestApplication.iml" filepath="$PROJECT_DIR$/AndroidTestApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Rfid.AsciiProtocol/Rfid.AsciiProtocol.iml" filepath="$PROJECT_DIR$/Rfid.AsciiProtocol/Rfid.AsciiProtocol.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

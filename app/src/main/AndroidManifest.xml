@@ -23,6 +23,10 @@
         <activity
             android:name=".SQLiteActivity"
             android:label="@string/title_activity_notification_sql"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RFIDActivity"
+            android:label="@string/title_activity_rfid"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
