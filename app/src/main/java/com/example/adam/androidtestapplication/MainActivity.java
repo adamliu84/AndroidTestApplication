@@ -51,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
+    public void onRFIDActivity(View view){
+        Intent intent = new Intent(this, RFIDActivity.class);
+        this.startActivity(intent);
+    }
+
     private String getTextInput(){
         String szPassValue = ((TextView)findViewById(R.id.txtInput)).getText().toString();
         if(szPassValue.equals("")){

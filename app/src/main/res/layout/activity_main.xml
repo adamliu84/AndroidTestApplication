@@ -74,7 +74,8 @@
                 android:layout_alignParentStart="true" />
 
             <Button
-                android:text="TEMP4"
+                android:text="Bluetooth RFID"
+                android:onClick="onRFIDActivity"
                 android:layout_column="0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
