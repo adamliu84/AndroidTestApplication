@@ -2,6 +2,7 @@ package com.example.adam.androidtestapplication;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.adam.androidtestapplication.rfid.InventoryModel;
 import com.example.adam.androidtestapplication.rfid.ModelBase;
@@ -45,15 +48,21 @@ public class RFIDActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rfid);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Clear all log from edittext
+                Context context = getApplicationContext();
+                CharSequence text = "All text log cleared";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                EditText rangescanLogEditText  = (EditText)findViewById(R.id.rangescanlog);
+                rangescanLogEditText.setText("");
             }
         });
 
@@ -67,7 +76,7 @@ public class RFIDActivity extends AppCompatActivity {
             // Loop through paired devices
             for (BluetoothDevice device : pairedDevices) {
                 // Add the name and address to an array adapter to show in a ListView
-                Log.i("Bluetooth", device.getName()+" "+device.getAddress());
+                //Log.i("Bluetooth", device.getName()+" "+device.getAddress());
                 BluetoothDevice tempBTDev = mBluetoothAdapter.getRemoteDevice(device.getAddress());
                 if(null != tempBTDev ){
                     mCommander.connect(tempBTDev );
@@ -109,6 +118,11 @@ public class RFIDActivity extends AppCompatActivity {
 
     }
 
+    private void updateEditText(String message){
+        EditText rangescanLogEditText  = (EditText)findViewById(R.id.rangescanlog);
+        rangescanLogEditText.setText(message+"\n"+rangescanLogEditText.getText());
+    }
+
     //----------------------------------------------------------------------------------------------
     // Model notifications
     //----------------------------------------------------------------------------------------------
@@ -133,11 +147,14 @@ public class RFIDActivity extends AppCompatActivity {
                         else if( message.startsWith("BC:")) {
                             //mBarcodeResultsArrayAdapter.add(message);
                             //scrollBarcodeListViewToBottom();
+                            message = message.substring(2);
                             Log.d("Weakhandler_BC", message);
+                            updateEditText("Scan:"+message);
                         }
                         else if( message.startsWith("EPC:")) {
                             message = message.substring(4);
                             Log.d("Weakhandler_EPC", convertHexToString(message));
+                            updateEditText("Range:"+convertHexToString(message));
                         }else {
                             //mResultsArrayAdapter.add(message);
                             //scrollResultsListViewToBottom();
