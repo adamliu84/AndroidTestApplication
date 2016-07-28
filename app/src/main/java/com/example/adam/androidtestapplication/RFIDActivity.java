@@ -2,7 +2,6 @@ package com.example.adam.androidtestapplication;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
@@ -76,7 +75,7 @@ public class RFIDActivity extends AppCompatActivity {
             }
         }
         DeviceProperties deviceProperties = mCommander.getDeviceProperties();
-        mCommander.addResponder(new LoggerResponder());
+        //mCommander.addResponder(new LoggerResponder());
         mCommander.addSynchronousResponder();
         //Create a (custom) model and configure its commander and handler
         mModel = new InventoryModel();
@@ -135,7 +134,11 @@ public class RFIDActivity extends AppCompatActivity {
                             //mBarcodeResultsArrayAdapter.add(message);
                             //scrollBarcodeListViewToBottom();
                             Log.d("Weakhandler_BC", message);
-                        } else {
+                        }
+                        else if( message.startsWith("EPC:")) {
+                            message = message.substring(4);
+                            Log.d("Weakhandler_EPC", convertHexToString(message));
+                        }else {
                             //mResultsArrayAdapter.add(message);
                             //scrollResultsListViewToBottom();
                             Log.d("Weakhandler_else", message);
@@ -151,5 +154,32 @@ public class RFIDActivity extends AppCompatActivity {
 
         }
     };
+
+    public static String convertHexToString(String value){
+
+        //TODO Correction of regex & functional if possible
+        //Tradition method: Split 2 char (hex) and convert to value
+        StringBuilder szDisplayValue = new StringBuilder();
+        for(int i=0;i<value.length();i+=2){
+            String szCurChar = value.substring(i, i+2);
+            szDisplayValue.append((char) Integer.parseInt(szCurChar, 16));
+        }
+        return szDisplayValue.toString();
+
+        //Spliting of the input value 2 by 2 for hex value
+        //String[] aStr = value.split("(?<=\\G.{2})");
+//        //Trying out first time java functional style of mapping hex to char
+//        //String szDisplayValue = (Arrays.asList(aStr).stream().map(s->((char)Integer.parseInt(s, 16))+"").collect(Collectors.joining()));
+//        //Building on Java 1.7, no functional to use
+//        StringBuilder szDisplayValue = new StringBuilder();
+//        for(int i = 0; i<aStr.length;i++){
+//            //szDisplayValue.append((char) Integer.parseInt(aStr[i], 16));
+//            //szDisplayValue.append(Integer.parseInt(aStr[i], 16));
+//            szDisplayValue.append(aStr[i]);
+//            szDisplayValue.append(",");
+//        }
+        //Log.i("convertHexToString", (char)Integer.parseInt(aStr[1], 16)+"");
+//        return szDisplayValue.toString()+"CV";
+    }
 
 }

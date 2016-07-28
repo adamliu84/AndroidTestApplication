@@ -82,7 +82,8 @@ public class InventoryModel extends ModelBase
 
 				String tidMessage = transponder.getTidData() == null ? "" : HexEncoding.bytesToString(transponder.getTidData());
 				String infoMsg = String.format(Locale.US, "\nRSSI: %d  PC: %04X  CRC: %04X", transponder.getRssi(), transponder.getPc(), transponder.getCrc());
-				sendMessageNotification("EPC: " + transponder.getEpc() + infoMsg + "\nTID: " + tidMessage );
+				//sendMessageNotification("EPC: " + transponder.getEpc() + infoMsg + "\nTID: " + tidMessage );
+				sendMessageNotification("EPC:" + transponder.getEpc());
 				mTagsSeen++;
 				if( !moreAvailable) {
 					sendMessageNotification("");
