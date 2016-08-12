@@ -1,6 +1,6 @@
 /**
  * Reference video: https://www.youtube.com/watch?v=dVwR5Gpw1_E
- * */
+ */
 
 package com.example.adam.androidtestapplication;
 
@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -28,20 +29,21 @@ import java.net.URL;
 
 public class HttpGetUPActivity extends AppCompatActivity {
 
-    private String[] texts = {"Num1","Num2", "Num3", "Num4", "Num5", "Num6", "Num7", "Num8", "Num9", "Num10"};
+    private String[] texts = {"Num1", "Num2", "Num3", "Num4", "Num5", "Num6", "Num7", "Num8", "Num9", "Num10"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_http_get_up);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button btnDownXml = (Button) findViewById(R.id.btnDownXml);
+        btnDownXml.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DownloadSecurityXmlTask().execute();
             }
         });
+
     }
 
 
@@ -61,7 +63,7 @@ public class HttpGetUPActivity extends AppCompatActivity {
                 //https://examples.javacodegeeks.com/core-java/net/authenticator/access-password-protected-url-with-authenticator/
                 Authenticator.setDefault(new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication (m_username, m_password.toCharArray());
+                        return new PasswordAuthentication(m_username, m_password.toCharArray());
                     }
                 });
                 //create the new connection
@@ -84,7 +86,7 @@ public class HttpGetUPActivity extends AppCompatActivity {
                 responseString = sb.toString();
             } catch (Exception e) {
                 responseString = "";
-                Log.e("FailXmlDownload",e.getMessage());
+                Log.e("FailXmlDownload", e.getMessage());
             }
             Log.d("SuccessfulXmlDownload", responseString);
 
@@ -94,9 +96,10 @@ public class HttpGetUPActivity extends AppCompatActivity {
 
     private final String FOLDER_NAME = "AndroidTestApplication";
     private final String FILE_NAME = "Text.xml";
-    private void saveFile(){
+
+    private void saveFile() {
         try {
-            String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +"/" + FOLDER_NAME;
+            String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + FOLDER_NAME;
             File directory = new File(file_path);
             if (!directory.exists()) {
                 directory.mkdirs();
@@ -112,7 +115,7 @@ public class HttpGetUPActivity extends AppCompatActivity {
             writer.flush();
             writer.close();
             Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("saveFileError", e.getMessage());
         }
     }
