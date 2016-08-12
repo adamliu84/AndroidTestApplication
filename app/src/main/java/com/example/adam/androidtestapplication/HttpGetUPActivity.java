@@ -6,6 +6,7 @@ package com.example.adam.androidtestapplication;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Authenticator;
@@ -87,4 +91,30 @@ public class HttpGetUPActivity extends AppCompatActivity {
             return null;
         }
     }
+
+    private final String FOLDER_NAME = "AndroidTestApplication";
+    private final String FILE_NAME = "Text.xml";
+    private void saveFile(){
+        try {
+            String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +"/" + FOLDER_NAME;
+            File directory = new File(file_path);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            File gpxfile = new File(file_path, FILE_NAME);
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append("<?xml version='1.0' encoding='UTF-8'?><note>\n" +
+                    "  <to>Tove</to>\n" +
+                    "  <from>Jani</from>\n" +
+                    "  <heading>Reminder</heading>\n" +
+                    "  <body>Don't forget me this weekend!</body>\n" +
+                    "</note>");
+            writer.flush();
+            writer.close();
+            Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Log.e("saveFileError", e.getMessage());
+        }
+    }
+
 }
