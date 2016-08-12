@@ -30,9 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
-        android:layout_below="@+id/downxml"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/dumpxml">
+        android:layout_below="@+id/btnDownXml"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"
