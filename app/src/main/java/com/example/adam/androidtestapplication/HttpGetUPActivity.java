@@ -15,10 +15,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,18 +38,34 @@ public class HttpGetUPActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_http_get_up);
 
+        //Button to download and save the xml content into a file
         Button btnDownXml = (Button) findViewById(R.id.btnDownXml);
         btnDownXml.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DownloadSecurityXmlTask().execute();
+                try{
+                    String szData = new DownloadSecurityXmlTask().execute().get();
+                    saveFile(szData);
+                }catch (Exception e){
+                    Log.e("btnDownXmlClickError", e.getMessage());
+                }
+
+            }
+        });
+
+        //Quick dump of (xml) files found in the selected folder
+        Button btnDumpXml = (Button) findViewById(R.id.btnDumpXml);
+        btnDumpXml.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dumpFile();
             }
         });
 
     }
 
 
-    private class DownloadSecurityXmlTask extends AsyncTask<Void, Void, Void> {
+    private class DownloadSecurityXmlTask extends AsyncTask<Void, Void, String> {
 
         private int nCurDownload = 0;
         private String m_url = LearnToPlayAPI.httpGetUP_url;
@@ -55,7 +73,7 @@ public class HttpGetUPActivity extends AppCompatActivity {
         private String m_password = LearnToPlayAPI.httpGetUP_password;
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected String doInBackground(Void... voids) {
             String responseString = null;
 
             try {
@@ -90,14 +108,14 @@ public class HttpGetUPActivity extends AppCompatActivity {
             }
             Log.d("SuccessfulXmlDownload", responseString);
 
-            return null;
+            return responseString;
         }
     }
 
     private final String FOLDER_NAME = "AndroidTestApplication";
     private final String FILE_NAME = "Text.xml";
 
-    private void saveFile() {
+    private void saveFile(String szData) {
         try {
             String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + FOLDER_NAME;
             File directory = new File(file_path);
@@ -106,17 +124,46 @@ public class HttpGetUPActivity extends AppCompatActivity {
             }
             File gpxfile = new File(file_path, FILE_NAME);
             FileWriter writer = new FileWriter(gpxfile);
-            writer.append("<?xml version='1.0' encoding='UTF-8'?><note>\n" +
-                    "  <to>Tove</to>\n" +
-                    "  <from>Jani</from>\n" +
-                    "  <heading>Reminder</heading>\n" +
-                    "  <body>Don't forget me this weekend!</body>\n" +
-                    "</note>");
+            writer.append(szData);
             writer.flush();
             writer.close();
             Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.e("saveFileError", e.getMessage());
+        }
+    }
+
+    private void dumpFile(){
+        try{
+            //Clear text
+            TextView txvDump = (TextView) findViewById(R.id.txvDump);
+            txvDump.setText("");
+
+            //Query of selected directory
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + FOLDER_NAME;
+            File f = new File(path);
+            File files[] = f.listFiles();
+            for (int i=0; i < files.length; i++)
+            {
+                File curFile = files[i];
+                //Only cater for xml dump
+                if(curFile.getName().contains(".xml")){
+                    StringBuilder text = new StringBuilder();
+                    text.append("File["+curFile.getName()+"]");
+                    text.append('\n');
+                    //Read text from file
+                    BufferedReader br = new BufferedReader(new FileReader(curFile));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        text.append(line);
+                        text.append('\n');
+                    }
+                    br.close();
+                    txvDump.setText(txvDump.getText()+text.toString());
+                }
+            }
+        }catch (Exception e){
+            Log.e("dumpFileError", e.getMessage());
         }
     }
 
