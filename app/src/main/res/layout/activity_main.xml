@@ -82,7 +82,8 @@
                 android:layout_alignParentStart="true" />
 
             <Button
-                android:text="TEMP5"
+                android:text="Protected URL download"
+                android:onClick="onHttpGetUPActivity"
                 android:layout_column="0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
