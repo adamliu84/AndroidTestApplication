@@ -90,7 +90,8 @@
                 android:layout_alignParentStart="true" />
 
             <Button
-                android:text="TEMP6"
+                android:text="TV Guide (via jsoup lib)"
+                android:onClick="onTvGuideActivity"
                 android:layout_column="0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
