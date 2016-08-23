@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,10 +24,12 @@ public class TvGuideActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tv_guide);
 
         try {
+            //Get the TV programming list (via default hardcode url)
             ArrayList<String> arrTvPrograms = new TvProgramTask().execute().get();
-            for(String curTvProgram : arrTvPrograms){
-                Log.i("Tv",curTvProgram);
-            }
+            //Display of the tv programming listing on listview
+            ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrTvPrograms);
+            ListView listView = (ListView) findViewById(R.id.tvprogramlistview);
+            listView.setAdapter(itemsAdapter);
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
         }
