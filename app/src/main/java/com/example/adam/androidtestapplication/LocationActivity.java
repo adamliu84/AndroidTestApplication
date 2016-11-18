@@ -10,6 +10,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class LocationActivity extends AppCompatActivity {
 
@@ -26,7 +28,10 @@ public class LocationActivity extends AppCompatActivity {
         iLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.d("OnLocationChanged", location.toString());
+                EditText gpsLogEditText  = (EditText)findViewById(R.id.gpslog);
+                StringBuilder szBuilder = new StringBuilder();
+                szBuilder.append("Current Location:").append(location.getLongitude()).append("|").append(location.getLatitude()).append("\n");
+                gpsLogEditText.setText(szBuilder.toString()+gpsLogEditText.getText());
             }
 
             @Override
