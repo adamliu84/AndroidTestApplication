@@ -98,11 +98,12 @@
                 android:layout_alignParentStart="true" />
 
             <Button
-                android:text="TEMP7"
+                android:text="Location - Genji Perfect Seiha"
                 android:layout_column="0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:onClick="onGPSActivity" />
 
             <Button
                 android:text="TEMP8"
