@@ -71,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
+    public void onCameraLiveActivity(View view){
+        Intent intent = new Intent(this, CamerLiveActivity.class);
+        this.startActivity(intent);
+    }
+
     private String getTextInput(){
         String szPassValue = ((TextView)findViewById(R.id.txtInput)).getText().toString();
         if(szPassValue.equals("")){

@@ -106,11 +106,12 @@
                 android:onClick="onGPSActivity" />
 
             <Button
-                android:text="TEMP8"
+                android:text="Camera Live"
                 android:layout_column="0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:onClick="onCameraLiveActivity"/>
 
             <Button
                 android:text="TEMP9"

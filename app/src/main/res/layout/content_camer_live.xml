@@ -13,4 +13,10 @@
     tools:context="com.example.adam.androidtestapplication.CamerLiveActivity"
     tools:showIn="@layout/activity_camer_live">
 
+    <SurfaceView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/surfaceView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

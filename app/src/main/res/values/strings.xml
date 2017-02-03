@@ -4,4 +4,5 @@
     <string name="title_activity_rfid">RFIDActivity</string>
     <string name="title_activity_http_get_up">HttpGetUPActivity</string>
     <string name="title_activity_location_gps">Suzuran All-Boys High School</string>
+    <string name="title_activity_camer_live">CamerLiveActivity</string>
 </resources>
