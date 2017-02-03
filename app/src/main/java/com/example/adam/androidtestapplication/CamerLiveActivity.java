@@ -87,9 +87,18 @@ public class CamerLiveActivity extends AppCompatActivity implements SurfaceHolde
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        int nCameraCount = Camera.getNumberOfCameras();
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        for(int nCurNo=0; nCurNo < nCameraCount; nCurNo++){
+            Camera.getCameraInfo(nCurNo, cameraInfo);
+            if(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT){
+                camera = Camera.open(nCurNo);   // opening camera
+                camera.setDisplayOrientation(90);   // setting camera preview orientation
+            }
+        }
         // TODO Auto-generated method stub
-        camera = Camera.open();   // opening camera
-        camera.setDisplayOrientation(90);   // setting camera preview orientation
+//        camera = Camera.open();   // opening camera
+//        camera.setDisplayOrientation(90);   // setting camera preview orientation
     }
 
     @Override
